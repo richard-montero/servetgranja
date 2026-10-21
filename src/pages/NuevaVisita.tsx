@@ -16,7 +16,7 @@ export default function NuevaVisita() {
 
   if (!cria) {
     return (
-      <div className="phone">
+      <div className="app">
         <AppBar titulo="Nueva visita" volver="/crias" />
         <main className="screen">
           {cargando && <Cargando />}

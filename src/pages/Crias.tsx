@@ -24,7 +24,7 @@ export default function Crias() {
   }
 
   return (
-    <div className="phone">
+    <div className="app">
       <AppBar titulo="Visita técnica" subtitulo="Crías activas autorizadas" />
       <main className="screen">
         {aviso && <div className="toast">Visita guardada · {aviso}</div>}
@@ -38,6 +38,7 @@ export default function Crias() {
             <h2>
               {titulo} <span>{lista.length}</span>
             </h2>
+            <div className="rejilla">
             {lista.map((c) => (
               <div className="cria" key={c.IdCria}>
                 <b>
@@ -57,6 +58,7 @@ export default function Crias() {
                 <span className="meta">Inicio cría {fechaCorta(c.CrFecInicio)}</span>
               </div>
             ))}
+            </div>
           </section>
         ))}
       </main>

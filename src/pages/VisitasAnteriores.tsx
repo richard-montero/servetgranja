@@ -12,7 +12,7 @@ export default function VisitasAnteriores() {
   const titulo = datos?.nivel === 1 ? 'Visitas de la fecha anterior' : 'Todas las visitas'
 
   return (
-    <div className="phone">
+    <div className="app">
       <AppBar titulo={titulo} subtitulo="Solo lectura" volver={`/visita/${idCria}`} />
       <main className="screen">
         {cargando && <Cargando />}
@@ -21,6 +21,7 @@ export default function VisitasAnteriores() {
           <p className="hint">Visitas del {fechaCorta(datos.visitas[0].VstTcFec)}, la fecha más reciente con visitas.</p>
         )}
         {datos && datos.visitas.length === 0 && <p className="hint centro">Esta cría todavía no tiene visitas registradas.</p>}
+        <div className="rejilla">
         {datos?.visitas.map((v) => {
           const checks = [
             v.VstTcChkAli && 'Alimento', v.VstTcChkAgua && 'Agua', v.VstTcNec && 'Necropsia', v.VstTcMstLab && 'Muestra lab.',
@@ -49,6 +50,7 @@ export default function VisitasAnteriores() {
             </article>
           )
         })}
+        </div>
         <button className="btn ghost" onClick={() => navigate(`/visita/${idCria}`)}>Volver a la nueva visita</button>
       </main>
     </div>

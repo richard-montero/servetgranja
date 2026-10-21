@@ -89,9 +89,10 @@ export function EditorVisita({ cria, inicial, titulo, volver, encabezado, onGuar
   )
 
   return (
-    <div className="phone">
+    <div className="app">
       <AppBar titulo={titulo} subtitulo={`${cria.EmpNombre} – ${cria.GrjNombre}`} volver={volver} />
-      <main className="screen">
+      <main className="screen editor">
+        <div className="col">
         <FichaCria cria={cria} />
         {encabezado}
         <div className="row">
@@ -113,7 +114,9 @@ export function EditorVisita({ cria, inicial, titulo, volver, encabezado, onGuar
           <label className="lbl" htmlFor="em">Empresa del técnico</label>
           <input id="em" type="text" maxLength={50} value={f.empresa} onChange={(e) => set('empresa', e.target.value)} />
         </div>
+        </div>
 
+        <div className="col">
         <div className="tabs" role="tablist">
           {([['obs', 'Observaciones', errVac], ['rec', 'Recomend.', ''], ['sit', 'Situación', errSit]] as const).map(([k, t, pend]) => (
             <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>
@@ -185,6 +188,7 @@ export function EditorVisita({ cria, inicial, titulo, volver, encabezado, onGuar
           </>
         )}
         {errorGuardar && <MensajeError texto={errorGuardar} />}
+        </div>
       </main>
       <footer className="footer">
         <label className="chk pdf">

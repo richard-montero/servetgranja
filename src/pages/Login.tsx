@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { AppBar } from '../components/AppBar'
+import { CampoClave } from '../components/CampoClave'
 import { MensajeError } from '../components/Estado'
 import { useAuth } from '../hooks/useAuth'
 import { almacen } from '../lib/api'
@@ -32,7 +33,7 @@ export default function Login() {
   }
 
   return (
-    <div className="phone">
+    <div className="app angosta">
       <AppBar titulo="Servicios Veterinarios en Granja" subtitulo="Visitas técnicas avícolas" />
       <form className="screen" onSubmit={enviar} noValidate>
         <div className="brand">
@@ -49,7 +50,7 @@ export default function Login() {
         </div>
         <div>
           <label className="lbl" htmlFor="pw">Contraseña</label>
-          <input id="pw" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <CampoClave id="pw" autoComplete="current-password" value={password} onChange={setPassword} />
         </div>
         {error && <MensajeError texto={error} />}
         <button className="btn" type="submit" disabled={enviando}>

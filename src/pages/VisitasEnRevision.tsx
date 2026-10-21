@@ -11,7 +11,7 @@ export default function VisitasEnRevision() {
   const { datos, error, cargando } = useApi<VisitaRevision[]>(`revision?cria=${idCria}`)
 
   return (
-    <div className="phone">
+    <div className="app">
       <AppBar titulo="Aprobar visita" subtitulo="Tus visitas en revisión" volver="/crias" />
       <main className="screen">
         {cargando && <Cargando />}
@@ -20,6 +20,7 @@ export default function VisitasEnRevision() {
         {datos && datos.length > 0 && (
           <p className="hint">Abre una visita para corregirla. Al guardarla con “Generar informe PDF” queda aprobada.</p>
         )}
+        <div className="rejilla">
         {datos?.map((v) => (
           <button key={v.IdVstTec} className="revision" onClick={() => navigate(`/visita/${idCria}/revision/${v.IdVstTec}`)}>
             <span className="cab">
@@ -33,6 +34,7 @@ export default function VisitasEnRevision() {
             </span>
           </button>
         ))}
+        </div>
       </main>
     </div>
   )

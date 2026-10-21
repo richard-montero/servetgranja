@@ -39,7 +39,8 @@
 }
 
 * { box-sizing: border-box; }
-html, body, #root { height: 100%; }
+html, body { height: 100%; }
+#root { min-height: 100%; display: flex; flex-direction: column; }
 body {
   margin: 0;
   background: var(--bg);
@@ -54,19 +55,38 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
   outline-offset: 2px;
 }
 
-/* En el celular ocupa toda la pantalla; en PC se centra como una tarjeta. */
-.phone {
-  background: var(--surface);
-  min-height: 100%;
-  max-width: 480px;
-  margin: 0 auto;
+/*
+  Diseño adaptable:
+  · Teléfono (< 768px): una columna a pantalla completa.
+  · Tableta (768–1023px): contenido centrado, listas en dos columnas.
+  · PC (≥ 1024px): ancho máximo de 1120px, listas en tres columnas y el formulario de visita en dos.
+  Ingreso y cambio de clave (.angosta) se muestran como una tarjeta centrada en tableta y PC.
+*/
+/* Margen lateral: 16px en teléfono; en pantallas grandes centra el contenido en --ancho.
+   Se declara también en .editor y .footer para que tomen su propio --ancho. */
+.app, .app .editor, .app .footer {
+  --lado-izq: max(16px, env(safe-area-inset-left, 0px), calc((100% - var(--ancho)) / 2));
+  --lado-der: max(16px, env(safe-area-inset-right, 0px), calc((100% - var(--ancho)) / 2));
+}
+.app {
+  --ancho: 1120px;
+  background: var(--bg);
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
+.app.angosta {
+  --ancho: 100%;
+  background: var(--surface);
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}
 @media (min-width: 600px) {
-  .phone {
-    min-height: calc(100% - 48px);
-    margin: 24px auto;
+  .app.angosta {
+    flex: none;
+    width: 100%;
+    margin: 48px auto;
     border: 1px solid var(--line);
     border-radius: 24px;
     overflow: hidden;
@@ -80,7 +100,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
   z-index: 2;
   background: var(--field);
   color: var(--field-ink);
-  padding: calc(12px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 12px max(16px, env(safe-area-inset-left, 0px));
+  padding: calc(12px + env(safe-area-inset-top, 0px)) var(--lado-der) 12px var(--lado-izq);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -94,11 +114,39 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
 .link { background: none; border: 0; padding: 0; color: inherit; text-decoration: underline; font: inherit; cursor: pointer; }
 
 .screen {
-  padding: 16px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));
+  padding: 16px var(--lado-der) 24px var(--lado-izq);
   display: flex;
   flex-direction: column;
   gap: 14px;
   flex: 1;
+}
+
+/* Listas de tarjetas: 1 columna en teléfono, 2 en tableta, 3 en PC. */
+.rejilla { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+@media (min-width: 768px) {
+  .rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .app:not(.angosta) .screen { padding-top: 24px; gap: 18px; }
+  .app:not(.angosta) .screen > .btn { align-self: flex-start; width: auto; min-width: 260px; }
+}
+@media (min-width: 1024px) {
+  .rejilla { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .appbar h1 { font-size: 1.4rem; }
+}
+
+/* Formulario de visita: una columna hasta 1023px (máx. 720px en tableta), dos columnas en PC. */
+.editor .col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+@media (min-width: 768px) {
+  .app .editor { --ancho: 720px; }
+}
+@media (min-width: 1024px) {
+  .app .editor {
+    --ancho: 1120px;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 28px;
+    align-items: start;
+  }
+  .editor .col:first-child { position: sticky; top: 84px; }
 }
 
 .lbl { font: 600 0.78rem var(--display); text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); display: block; margin-bottom: 4px; }
@@ -154,7 +202,6 @@ input:disabled, textarea:disabled { opacity: 0.55; }
 .group h2 { font: 700 1rem var(--display); margin: 0 0 6px; display: flex; justify-content: space-between; gap: 8px; }
 .group h2 span { color: var(--muted); font-weight: 500; }
 .cria { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-.cria + .cria { margin-top: 8px; }
 .cria b { font: 700 1.05rem var(--display); min-width: 0; }
 .cria .meta { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .cria .acciones { grid-row: span 2; display: flex; flex-direction: column; gap: 6px; }
@@ -191,10 +238,51 @@ legend { font: 600 0.78rem var(--display); text-transform: uppercase; letter-spa
   bottom: 0;
   background: var(--surface);
   border-top: 1px solid var(--line);
-  padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  padding: 12px var(--lado-der) calc(12px + env(safe-area-inset-bottom, 0px)) var(--lado-izq);
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+/* En tableta y PC: casilla del PDF a la izquierda, botones a la derecha, alineados con el formulario. */
+@media (min-width: 768px) {
+  .app .footer { --ancho: 720px; flex-direction: row; align-items: center; justify-content: space-between; }
+  .footer .chk.pdf { flex: 1; max-width: 420px; }
+  .footer .row { flex: none; width: 300px; }
+}
+@media (min-width: 1024px) {
+  .app .footer { --ancho: 1120px; }
+}
+
+/* Contraseña con botón propio de ver/ocultar (oculta el ojo nativo de Edge para no duplicarlo). */
+.clave { position: relative; }
+.clave input { padding-right: 48px; }
+.clave input::-ms-reveal, .clave input::-ms-clear { display: none; }
+.clave .ojo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 46px;
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  border-radius: 0 10px 10px 0;
+  color: var(--muted);
+  cursor: pointer;
+}
+.clave .ojo[aria-pressed='true'] { color: var(--field); }
+
+/* Respuesta al pasar el mouse (PC); en pantallas táctiles no aplica. */
+@media (hover: hover) {
+  .btn:not(:disabled):hover { filter: brightness(1.08); }
+  .btn.ghost:not(:disabled):hover { background: var(--sunk); filter: none; }
+  .cria .go:hover { filter: brightness(1.06); }
+  .cria .go.aprobar:hover { background: var(--sunk); }
+  .revision:hover { border-color: var(--field); }
+  .tabs button:hover { color: var(--fg); }
+  .chk:hover:not(:has(input:disabled)) { border-color: var(--field); }
+  .clave .ojo:hover { color: var(--fg); }
 }
 .chk.pdf { border-color: var(--straw); background: var(--straw-soft); color: var(--straw-ink); align-items: flex-start; }
 .chk.pdf input { margin-top: 2px; }

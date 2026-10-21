@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AppBar } from '../components/AppBar'
+import { CampoClave } from '../components/CampoClave'
 import { MensajeError } from '../components/Estado'
 import { useAuth } from '../hooks/useAuth'
 
@@ -30,7 +31,7 @@ export default function CambiarClave() {
   }
 
   return (
-    <div className="phone">
+    <div className="app angosta">
       <AppBar titulo="Cambia tu contraseña" subtitulo="Primer ingreso o clave reiniciada" />
       <form className="screen" onSubmit={enviar} noValidate>
         <div className="notice">
@@ -38,11 +39,11 @@ export default function CambiarClave() {
         </div>
         <div>
           <label className="lbl" htmlFor="np">Nueva contraseña</label>
-          <input id="np" type="password" autoComplete="new-password" maxLength={25} value={nueva} onChange={(e) => setNueva(e.target.value)} />
+          <CampoClave id="np" autoComplete="new-password" maxLength={25} value={nueva} onChange={setNueva} />
         </div>
         <div>
           <label className="lbl" htmlFor="np2">Repite la contraseña</label>
-          <input id="np2" type="password" autoComplete="new-password" maxLength={25} value={repite} onChange={(e) => setRepite(e.target.value)} />
+          <CampoClave id="np2" autoComplete="new-password" maxLength={25} value={repite} onChange={setRepite} />
         </div>
         <p className="hint">Entre 4 y 25 caracteres, distinta de 123.</p>
         {repite && nueva !== repite && <MensajeError texto="Las contraseñas no coinciden." />}

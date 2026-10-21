@@ -44,13 +44,9 @@ export default handler(['GET', 'PUT'], async (req) => {
         WHERE IdVstTec = ? AND VstTcTecId = ? AND VstTcEstado = 0`,
       [...valores, id, tecId],
     )
-    // El usuario de la base no tiene DELETE: la recomendación existente se actualiza (vacía si se borró).
-    const [recs] = await conn.query('SELECT IdVstTcRe FROM AVEn_VisitaTec2Rec WHERE VstTcReIdVis = ? ORDER BY IdVstTcRe', [id])
-    const ids = (recs as { IdVstTcRe: number }[]).map((r) => r.IdVstTcRe)
-    if (ids.length) {
-      await conn.query('UPDATE AVEn_VisitaTec2Rec SET VstTcReRec = ? WHERE IdVstTcRe = ?', [rec, ids[0]])
-      if (ids.length > 1) await conn.query('UPDATE AVEn_VisitaTec2Rec SET VstTcReRec = ? WHERE IdVstTcRe IN (?)', ['', ids.slice(1)])
-    } else if (rec) {
+    // La recomendación se reemplaza: si quedó vacía, no queda ningún registro en AVEn_VisitaTec2Rec.
+    await conn.query('DELETE FROM AVEn_VisitaTec2Rec WHERE VstTcReIdVis = ?', [id])
+    if (rec) {
       await conn.query('INSERT INTO AVEn_VisitaTec2Rec (VstTcReIdVis, VstTcReRec) VALUES (?, ?)', [id, rec])
     }
     await conn.commit()

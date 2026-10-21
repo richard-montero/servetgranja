@@ -3,7 +3,7 @@ import { AppBar } from '../components/AppBar'
 
 export default function NoEncontrada() {
   return (
-    <div className="phone">
+    <div className="app angosta">
       <AppBar titulo="Página no encontrada" />
       <main className="screen">
         <p>Esta dirección no existe en SerVetGranja.</p>

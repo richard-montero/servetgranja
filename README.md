@@ -37,8 +37,18 @@ Desarrollado por RAMN Software.
 | Informe | Se genera en el celular con jsPDF, en una página A4. Nombre del archivo: `Informe-VetGranja_<Granja>_<Galpón>_dia<edad>_<fecha>_N<n.º>.pdf`. |
 | *Aprobar visita* | Botón bajo *Visita técnica*. Aparece solo si la cría tiene visitas en revisión hechas por el técnico que ingresó, y muestra cuántas son. |
 | Editar visita en revisión | Mismo formulario que *Nueva visita*, con la misma casilla del PDF. Solo se pueden editar las visitas propias que siguen con estado 0. |
-| Recomendación al editar | El usuario de la base no tiene `DELETE`: si se borra el texto, la fila de `AVEn_VisitaTec2Rec` queda vacía y no se muestra. |
+| Recomendación al editar | Se reemplaza: se borra la anterior de `AVEn_VisitaTec2Rec` y solo se inserta una nueva si hay texto. Requiere permiso `DELETE`. |
 | Login | El título dice "Servicios Veterinarios en Granja". |
+
+### Ajuste 2 (pantallas y contraseña)
+
+| Tema | Decisión |
+|---|---|
+| Teléfono (< 768px) | Una columna a pantalla completa. |
+| Tableta (768–1023px) | Listas de crías y visitas en 2 columnas. Formulario centrado (máx. 720px), con la casilla del PDF y los botones en una sola fila. |
+| PC (≥ 1024px) | Contenido centrado (máx. 1120px), listas en 3 columnas, formulario de visita en 2 columnas (datos a la izquierda, evaluación a la derecha). |
+| Ingreso y cambio de clave | Tarjeta centrada en tableta y PC. |
+| Contraseña | Botón propio con un ojo para ver u ocultar el texto, igual en todos los sistemas. Se oculta el ojo nativo de Edge para que no salgan dos. |
 
 ## Estructura
 
@@ -105,7 +115,7 @@ En **Site configuration → Environment variables**:
 | `DB_USERNAME` | `miUsuario` |
 | `DB_PASSWORD` | `miContraseña` |
 
-El usuario MySQL debe aceptar conexiones desde **cualquier IP** (host `%`), porque Netlify no sale siempre desde la misma dirección. Necesita permisos `SELECT`, `INSERT` y `UPDATE`.
+El usuario MySQL debe aceptar conexiones desde **cualquier IP** (host `%`), porque Netlify no sale siempre desde la misma dirección. Necesita permisos `SELECT`, `INSERT`, `UPDATE` y `DELETE` (este último solo sobre `AVEn_VisitaTec2Rec`).
 
 ## Checklist de verificación en Netlify (sin pasos locales)
 

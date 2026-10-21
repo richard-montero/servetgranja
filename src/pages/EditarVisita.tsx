@@ -35,7 +35,7 @@ export default function EditarVisita() {
 
   if (!cria.datos || !visita.datos) {
     return (
-      <div className="phone">
+      <div className="app">
         <AppBar titulo="Aprobar visita" volver={volver} />
         <main className="screen">
           {(cria.cargando || visita.cargando) && <Cargando />}
