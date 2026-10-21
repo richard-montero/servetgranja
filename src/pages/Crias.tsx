@@ -44,9 +44,16 @@ export default function Crias() {
                   {c.GlpNombre}
                   <span className={`chip n${c.NivelAuth}`}>{NIVEL_ETIQUETA[c.NivelAuth]}</span>
                 </b>
-                <button className="go" onClick={() => navigate(`/visita/${c.IdCria}`)}>
-                  Visita técnica
-                </button>
+                <div className="acciones">
+                  <button className="go" onClick={() => navigate(`/visita/${c.IdCria}`)}>
+                    Visita técnica
+                  </button>
+                  {c.EnRevision > 0 && (
+                    <button className="go aprobar" onClick={() => navigate(`/visita/${c.IdCria}/revision`)}>
+                      Aprobar visita ({c.EnRevision})
+                    </button>
+                  )}
+                </div>
                 <span className="meta">Inicio cría {fechaCorta(c.CrFecInicio)}</span>
               </div>
             ))}

@@ -6,6 +6,8 @@ import CambiarClave from './pages/CambiarClave'
 import Crias from './pages/Crias'
 import NuevaVisita from './pages/NuevaVisita'
 import VisitasAnteriores from './pages/VisitasAnteriores'
+import VisitasEnRevision from './pages/VisitasEnRevision'
+import EditarVisita from './pages/EditarVisita'
 import NoEncontrada from './pages/NoEncontrada'
 
 export default function App() {
@@ -20,6 +22,8 @@ export default function App() {
             <Route path="/crias" element={<Crias />} />
             <Route path="/visita/:idCria" element={<NuevaVisita />} />
             <Route path="/visita/:idCria/anteriores" element={<VisitasAnteriores />} />
+            <Route path="/visita/:idCria/revision" element={<VisitasEnRevision />} />
+            <Route path="/visita/:idCria/revision/:idVisita" element={<EditarVisita />} />
           </Route>
           <Route path="*" element={<NoEncontrada />} />
         </Routes>

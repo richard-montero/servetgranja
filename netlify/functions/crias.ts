@@ -6,7 +6,10 @@ export default handler(['GET'], async (req) => {
   const { tecId } = leerSesion(req)
   const rows = await query(
     `SELECT Empresas.EmpId, Empresas.EmpNombre, AVEn_Granjas.GrjNombre, AVEn_Galpones.GlpNombre,
-            AVEnG_Cria.IdCria, AVEnG_Cria.CrFecInicio, TecCriaAuth.NivelAuth
+            AVEnG_Cria.IdCria, AVEnG_Cria.CrFecInicio, TecCriaAuth.NivelAuth,
+            (SELECT COUNT(*) FROM AVEn_VisitaTec2 v
+              WHERE v.VstTcIdCria = AVEnG_Cria.IdCria AND v.VstTcTecId = Tecnicos.TecId AND v.VstTcEstado = 0
+            ) AS EnRevision
        FROM AVEnG_Cria
        INNER JOIN TecCriaAuth ON AVEnG_Cria.IdCria = TecCriaAuth.CriaId
        INNER JOIN Tecnicos ON Tecnicos.TecId = TecCriaAuth.TecId

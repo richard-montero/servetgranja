@@ -21,6 +21,38 @@ export interface CriaLista {
   IdCria: number
   CrFecInicio: string
   NivelAuth: NivelAuth
+  /** Visitas del técnico en revisión (VstTcEstado = 0) para esta cría. */
+  EnRevision: number
+}
+
+export interface VisitaRevision {
+  IdVstTec: number
+  VstTcFec: string
+  VstTcDoc: number
+  VstTcObs: string | null
+  VstTcSitNor: number
+}
+
+/** Visita en revisión tal como la devuelve /api/visita para editarla. */
+export interface VisitaEditable {
+  IdVstTec: number
+  VstTcIdCria: number
+  VstTcDoc: number
+  VstTcFec: string
+  VstTcTecEmp: string | null
+  VstTcTipDif: number
+  VstTcChkAli: number
+  VstTcChkAgua: number
+  VstTcNec: number
+  VstTcMstLab: number
+  VstTcVacunas: number
+  VstTcVacuDet: string | null
+  VstTcObs: string | null
+  VstTcSitNor: number
+  VstTcSitPrbSan: number
+  VstTcSitPrbMan: number
+  VstTcSitPrbNut: number
+  recomendacion: string
 }
 
 export interface CriaDetalle {
@@ -53,6 +85,8 @@ export interface VisitaAnterior {
   VstTcSitPrbSan: number
   VstTcSitPrbMan: number
   VstTcSitPrbNut: number
+  /** 0 = en revisión · 1 = aprobada/emitida */
+  VstTcEstado: number
   TecNombre: string | null
   recomendaciones: string[]
 }

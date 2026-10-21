@@ -36,6 +36,7 @@ export default function VisitasAnteriores() {
               </header>
               <div className="lock">{v.TecNombre ?? 'Técnico desconocido'}{v.VstTcTecEmp ? ` · ${v.VstTcTecEmp}` : ''}</div>
               <div className="pills">
+                {v.VstTcEstado === 0 && <span className="pill warn">En revisión</span>}
                 <span className="pill">Dif. {DIFERENCIAS[v.VstTcTipDif] ?? '—'}</span>
                 {checks.map((c) => <span key={c} className="pill on">✓ {c}</span>)}
                 {v.VstTcSitNor

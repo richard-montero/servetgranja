@@ -26,7 +26,19 @@ Desarrollado por RAMN Software.
 | Nivel 0 | Solo nueva visita. |
 | Nivel 1 | Ve las visitas de la fecha más reciente con visitas de esa cría, de todos los técnicos. |
 | Nivel 2 | Ve todas las visitas de la cría, de todos los técnicos. |
-| Visitas anteriores | Solo lectura, ordenadas por fecha y N.º, de la más nueva a la más antigua. |
+| Visitas anteriores | Solo lectura, ordenadas por fecha y N.º, de la más nueva a la más antigua. Las que siguen en revisión llevan la etiqueta "En revisión". |
+
+### Ajuste 1 (estado de la visita e informe PDF)
+
+| Tema | Decisión |
+|---|---|
+| `VstTcEstado` | `0` = en revisión · `1` = aprobada/emitida. |
+| Casilla *Generar informe PDF* | Junto a *Guardar*, marcada por omisión. Marcada: guarda `VstTcEstado = 1` y descarga el informe. Desmarcada: guarda `VstTcEstado = 0`, sin informe. |
+| Informe | Se genera en el celular con jsPDF, en una página A4. Nombre del archivo: `Informe-VetGranja_<Granja>_<Galpón>_dia<edad>_<fecha>_N<n.º>.pdf`. |
+| *Aprobar visita* | Botón bajo *Visita técnica*. Aparece solo si la cría tiene visitas en revisión hechas por el técnico que ingresó, y muestra cuántas son. |
+| Editar visita en revisión | Mismo formulario que *Nueva visita*, con la misma casilla del PDF. Solo se pueden editar las visitas propias que siguen con estado 0. |
+| Recomendación al editar | El usuario de la base no tiene `DELETE`: si se borra el texto, la fila de `AVEn_VisitaTec2Rec` queda vacía y no se muestra. |
+| Login | El título dice "Servicios Veterinarios en Granja". |
 
 ## Estructura
 
@@ -43,20 +55,24 @@ SerVetGranja/
 ├─ netlify/
 │  ├─ lib/
 │  │  ├─ db.ts                ← conexión MySQL (lee DB_*) y control de autorización por cría
-│  │  └─ http.ts              ← respuestas, errores y sesión firmada
+│  │  ├─ http.ts              ← respuestas, errores y sesión firmada
+│  │  └─ visita.ts            ← validación y columnas de la visita (alta y edición)
 │  └─ functions/              ← cada archivo es un endpoint /api/<nombre>
 │     ├─ login.ts             POST /api/login
 │     ├─ cambiar-clave.ts     POST /api/cambiar-clave
-│     ├─ crias.ts             GET  /api/crias
+│     ├─ crias.ts             GET  /api/crias  (incluye cuántas visitas tiene el técnico en revisión)
 │     ├─ cria.ts              GET  /api/cria?id=
-│     └─ visitas.ts           GET  /api/visitas?cria=   ·   POST /api/visitas
+│     ├─ visitas.ts           GET  /api/visitas?cria=   ·   POST /api/visitas
+│     ├─ revision.ts          GET  /api/revision?cria=
+│     └─ visita.ts            GET · PUT /api/visita?id=  (visita propia en revisión)
 └─ src/
    ├─ main.tsx · App.tsx · index.css
-   ├─ components/             AppBar, FichaCria, Estado
-   ├─ pages/                  Login, CambiarClave, Crias, NuevaVisita, VisitasAnteriores, NoEncontrada
+   ├─ components/             AppBar, FichaCria, Estado, EditorVisita
+   ├─ pages/                  Login, CambiarClave, Crias, NuevaVisita, VisitasAnteriores,
+   │                          VisitasEnRevision, EditarVisita, NoEncontrada
    ├─ routes/                 ProtectedRoute
    ├─ hooks/                  useAuth, useApi
-   ├─ lib/                    api (cliente de la API), formato
+   ├─ lib/                    api (cliente de la API), formato, informePdf
    └─ types/
 ```
 
@@ -69,6 +85,8 @@ SerVetGranja/
 | `/crias` | Crías autorizadas |
 | `/visita/:idCria` | Nueva visita |
 | `/visita/:idCria/anteriores` | Visitas anteriores (niveles 1 y 2) |
+| `/visita/:idCria/revision` | Visitas propias en revisión de esa cría |
+| `/visita/:idCria/revision/:idVisita` | Editar y aprobar una visita en revisión |
 
 ### Seguridad
 
@@ -119,6 +137,18 @@ El usuario MySQL debe aceptar conexiones desde **cualquier IP** (host `%`), porq
 - [ ] Al guardar, vuelve a la lista con el aviso "Visita guardada · N.º …".
 - [ ] En MySQL aparece el registro en `AVEn_VisitaTec2`, y en `AVEn_VisitaTec2Rec` solo si se escribió una recomendación.
 - [ ] Dos visitas a la misma cría el mismo día se guardan como registros separados.
+
+**Informe PDF y aprobación (ajuste 1)**
+- [ ] En el login, el título dice "Servicios Veterinarios en Granja".
+- [ ] La casilla *Generar informe PDF* aparece marcada al abrir *Nueva visita*.
+- [ ] Guardar con la casilla marcada descarga el informe (`Informe-VetGranja_…pdf`) y deja `VstTcEstado = 1`.
+- [ ] Guardar con la casilla desmarcada no descarga nada y deja `VstTcEstado = 0`.
+- [ ] Esa cría muestra *Aprobar visita (1)* solo para el técnico que hizo la visita; otro técnico no ve el botón.
+- [ ] *Aprobar visita* lista solo las visitas propias en revisión de esa cría.
+- [ ] Al editar una visita, los datos guardados aparecen cargados en el formulario.
+- [ ] Guardar con la casilla marcada la aprueba (`VstTcEstado = 1`), descarga el informe y el botón desaparece si no quedan más.
+- [ ] Guardar con la casilla desmarcada actualiza los datos y la visita sigue en revisión.
+- [ ] Probar la descarga en Android y en iPhone. En iPhone, el PDF se abre en una pestaña y se guarda con *Compartir → Guardar en Archivos*.
 
 ## Subir a GitHub
 

@@ -33,7 +33,7 @@ export default function Login() {
 
   return (
     <div className="phone">
-      <AppBar titulo="SerVetGranja" subtitulo="Visitas técnicas avícolas" />
+      <AppBar titulo="Servicios Veterinarios en Granja" subtitulo="Visitas técnicas avícolas" />
       <form className="screen" onSubmit={enviar} noValidate>
         <div className="brand">
           <div className="mark">

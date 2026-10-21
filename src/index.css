@@ -157,7 +157,9 @@ input:disabled, textarea:disabled { opacity: 0.55; }
 .cria + .cria { margin-top: 8px; }
 .cria b { font: 700 1.05rem var(--display); min-width: 0; }
 .cria .meta { font-size: 0.85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.cria .go { grid-row: span 2; background: var(--straw); color: #3a2d00; border: 0; border-radius: 10px; padding: 9px 12px; font: 700 0.9rem var(--display); cursor: pointer; }
+.cria .acciones { grid-row: span 2; display: flex; flex-direction: column; gap: 6px; }
+.cria .go.aprobar { background: transparent; color: var(--field); border: 1.5px solid var(--field); }
+.cria .go { background: var(--straw); color: #3a2d00; border: 0; border-radius: 10px; padding: 9px 12px; font: 700 0.9rem var(--display); cursor: pointer; }
 .chip { display: inline-block; font: 600 0.72rem var(--display); letter-spacing: 0.05em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); margin-left: 6px; vertical-align: 1px; }
 .chip.n1 { border-color: var(--warn); color: var(--warn); }
 .chip.n2 { border-color: var(--ok); color: var(--ok); }
@@ -191,8 +193,22 @@ legend { font: 600 0.78rem var(--display); text-transform: uppercase; letter-spa
   border-top: 1px solid var(--line);
   padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
   display: flex;
+  flex-direction: column;
   gap: 10px;
 }
+.chk.pdf { border-color: var(--straw); background: var(--straw-soft); color: var(--straw-ink); align-items: flex-start; }
+.chk.pdf input { margin-top: 2px; }
+.chk.pdf span { font-weight: 700; }
+.chk.pdf small { display: block; font-weight: 400; font-size: 0.8rem; opacity: 0.85; }
+
+.revision { display: flex; flex-direction: column; gap: 6px; text-align: left; width: 100%; font: inherit; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; cursor: pointer; }
+.revision .cab { display: flex; justify-content: space-between; gap: 8px; font-family: var(--display); }
+.revision .cab b { font-size: 1.05rem; }
+.revision .cab span { color: var(--muted); }
+.revision .resumen { font-size: 0.9rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.revision .pie { display: flex; justify-content: space-between; align-items: center; }
+.revision .abrir { font: 700 0.9rem var(--display); color: var(--field); }
+.pill.warn { border-color: var(--warn); color: var(--warn); }
 
 .visit { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--sunk); }
 .visit header { display: flex; justify-content: space-between; gap: 8px; font: 700 1rem var(--display); }
