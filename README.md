@@ -104,6 +104,22 @@ SerVetGranja/
 - Al ingresar, la función entrega una sesión firmada que dura 12 horas. Su clave se deriva de `DB_PASSWORD`, así que no hace falta otra variable.
 - Cada endpoint vuelve a comprobar en `TecCriaAuth` que la cría esté activa y autorizada para ese técnico, y respeta su nivel.
 
+## Compartir e instalar la app
+
+La app es instalable: tiene un manifiesto (`public/manifest.webmanifest`) y los íconos de RAMN Software (`icon-192.png`, `icon-512.png`, `icon-maskable-512.png` y `apple-touch-icon.png`). Instalada, se abre como una app más, a pantalla completa y sin la barra del navegador.
+
+**Compartir:** envía la dirección de Netlify (`https://TU-SITIO.netlify.app`) por WhatsApp, correo o un código QR. No hace falta tienda de aplicaciones.
+
+**Instalar:**
+
+| Dispositivo | Pasos |
+|---|---|
+| Android (Chrome) | Abrir el enlace y tocar **Instalar en este dispositivo** en la pantalla de ingreso, o menú ⋮ → **Instalar app** / **Agregar a la pantalla principal**. |
+| iPhone / iPad (Safari) | Abrir el enlace **en Safari**, tocar **Compartir** → **Agregar a inicio** → **Agregar**. La pantalla de ingreso muestra estas instrucciones. |
+| PC (Chrome o Edge) | Abrir el enlace y pulsar **Instalar en este dispositivo**, o el ícono de instalar en la barra de direcciones. |
+
+El ícono de RAMN Software original mide solo 32×32 píxeles: se amplió sin suavizar para que se vea nítido, pero con estilo pixelado. Si tienes una versión de 512×512 o más grande, reemplaza los cuatro PNG para un ícono más fino.
+
 ## Variables de entorno en Netlify
 
 En **Site configuration → Environment variables**:

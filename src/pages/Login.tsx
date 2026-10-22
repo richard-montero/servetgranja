@@ -4,6 +4,7 @@ import { AppBar } from '../components/AppBar'
 import { CampoClave } from '../components/CampoClave'
 import { MensajeError } from '../components/Estado'
 import { useAuth } from '../hooks/useAuth'
+import { useInstalar } from '../hooks/useInstalar'
 import { almacen } from '../lib/api'
 
 export default function Login() {
@@ -13,6 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
+  const instalacion = useInstalar()
 
   if (sesion) return <Navigate to={sesion.debeCambiarClave ? '/cambiar-clave' : '/crias'} replace />
 
@@ -56,6 +58,17 @@ export default function Login() {
         <button className="btn" type="submit" disabled={enviando}>
           {enviando ? 'Ingresando…' : 'Ingresar'}
         </button>
+        {instalacion.modo === 'boton' && (
+          <button type="button" className="btn ghost instalar" onClick={instalacion.instalar}>
+            <img src="/icon-192.png" alt="" />
+            Instalar en este dispositivo
+          </button>
+        )}
+        {instalacion.modo === 'ios' && (
+          <p className="hint centro-texto">
+            Para tener la app en tu pantalla de inicio: en Safari toca <b>Compartir</b> y luego <b>Agregar a inicio</b>.
+          </p>
+        )}
         <div className="credit">
           <img src="/ramnsoft.png" alt="" />
           Desarrollado por RAMN Software

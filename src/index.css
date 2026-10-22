@@ -196,7 +196,10 @@ input:disabled, textarea:disabled { opacity: 0.55; }
 .brand .mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .brand h2 { font: 700 1.6rem var(--display); margin: 0; }
 .brand p { margin: 2px 0 0; color: var(--muted); }
-.credit { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.82rem; color: var(--muted); margin-top: auto; padding-top: 8px; }
+.btn.instalar { display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn.instalar img { width: 26px; height: 26px; border-radius: 6px; }
+.centro-texto { text-align: center; }
+.credit {display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.82rem; color: var(--muted); margin-top: auto; padding-top: 8px; }
 .credit img { background: #fff; border-radius: 6px; padding: 2px; width: 28px; height: 28px; image-rendering: pixelated; }
 
 .group h2 { font: 700 1rem var(--display); margin: 0 0 6px; display: flex; justify-content: space-between; gap: 8px; }
